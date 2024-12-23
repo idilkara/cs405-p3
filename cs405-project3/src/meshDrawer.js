@@ -171,7 +171,19 @@ void main()
 	// PLEASE DO NOT CHANGE ANYTHING ABOVE !!!
 	// Calculate the diffuse and specular lighting below.
 
+	
+	//calculating diffuse light: "diff"
+	diff = max(dot(normal, lightdir), 0.0); 
 
+	//calculating specular light: "spec"
+	
+	// we need the viewing direction and the light's reflection direction :
+	vec3 viewDir = normalize(-fragPos); //fragPos is also used in calculating the light direction
+	vec3 reflectDir = reflect(-lightdir,  normal); //calcualte the reflection vector
+
+	if (diff > 0.0) { //this conditon is to ensure that the front is lit and not the behind of the object
+		spec = pow(max(dot(viewDir, reflectDir), 0.0), phongExp);
+	}
 
 	// PLEASE DO NOT CHANGE ANYTHING BELOW !!!
 	/////////////////////////////////////////////////////////////////////////////
