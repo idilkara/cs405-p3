@@ -33,10 +33,29 @@ class SceneNode {
         var transformedNormals = normalMatrix;
         var transformedModel = modelMatrix;
 
+        // get the transformation matrix to apply the transformations.
+        var transformationMatrix = this.trs.getTransformationMatrix();
+
+        // apply the transformations using the matrix multiplication function defined 
+        transformedMvp = MatrixMult( mvp , transformationMatrix);
+        transformedModelView = MatrixMult( modelView , transformationMatrix) ;
+        transformedNormals = MatrixMult( normalMatrix, transformationMatrix) ;
+        transformedModel = MatrixMult( modelMatrix , transformationMatrix) ; 
+
         // Draw the MeshDrawer
         if (this.meshDrawer) {
             this.meshDrawer.draw(transformedMvp, transformedModelView, transformedNormals, transformedModel);
         }
+
+
+        // apply the same transformations to the childs of the current node too. 
+        // (the child nodes will have their own transformation matrices as well 
+        // and they will be applied on the transformation that is (here) passed from the parent node.  )
+        for(let child of this.children){
+            child.draw(transformedMvp, transformedModelView, transformedNormals, transformedModel );
+
+        }
+
     }
 
     
